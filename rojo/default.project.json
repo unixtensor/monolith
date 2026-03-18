@@ -5,11 +5,7 @@
 
 		"ServerScriptService": {
 			"monolith": {
-				"$className": "Folder",
-
-				"main": {
-					"$path": "src"
-				}
+				"$path": "src"
 			}
 		}
 	}
