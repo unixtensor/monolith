@@ -1,6 +1,7 @@
 --!strict
 
 local HttpService = game:GetService("HttpService")
+local Data = require(script.Parent.data)
 
 local Http = {} :: Constructor
 Http.__index = Http
@@ -8,11 +9,17 @@ Http.Enabled = HttpService.HttpEnabled
 Http.ApiEndpoint = {
 	CONNECT = "connect";
 	UPLOAD = "upload";
+	GAME_DATA = "game_data";
 }
 
 type Api = {
 	["CONNECT"]: "connect";
 	["UPLOAD"]: "upload";
+	["GAME_DATA"]: "game_data";
+}
+
+type JsonPayload = {
+	[string]: any
 }
 
 type Constructor = {
@@ -21,7 +28,8 @@ type Constructor = {
 	ApiEndpoint: Api;
 	new: (address: string, compression: Enum.HttpCompression) -> Http;
 	ValidAddress: (address: string) -> boolean;
-	PostAsync: (self: Http, json_payload: string, request: string) -> ();
+	PostAsync: (self: Http, payload: JsonPayload, request_endpoint: string) -> ();
+	UploadAsync: (self: Http, payload: Data.Payload) -> ();
 }
 type Self = {
 	address: string;
@@ -33,7 +41,7 @@ local function MakeApiRequest(address: string, request: string): string
 	return `{address}/api/v1/{request}`
 end
 
-local function PostBody(self: Http, game_data: boolean, json_payload: string, request: string): any
+local function PostBody(self: Http, is_game_data: boolean, json_payload: string, request: string): any
 	return {
 		Url = MakeApiRequest(self.address, request),
 		Method = "POST",
@@ -41,7 +49,7 @@ local function PostBody(self: Http, game_data: boolean, json_payload: string, re
 			["Content-Type"] = "application/json",
 		},
 		Body = json_payload,
-		Compress = game_data and self.compression or Enum.HttpCompression.None
+		Compress = is_game_data and self.compression or Enum.HttpCompression.None
 	}
 end
 
@@ -56,9 +64,14 @@ function Http.new(address, compression)
 	return setmetatable(self, Http)
 end
 
-function Http:PostAsync(json_payload, request)
-	local CreatePostBody = PostBody(self, false, json_payload, request)
-	HttpService:RequestAsync(CreatePostBody)
+function Http:UploadAsync(payload)
+	local json_payload = HttpService:JSONEncode(payload)
+	HttpService:RequestAsync(PostBody(self, true, json_payload, Http.ApiEndpoint.UPLOAD))
+end
+
+function Http:PostAsync(payload, request_endpoint)
+	local json_payload = HttpService:JSONEncode(payload)
+	HttpService:RequestAsync(PostBody(self, false, json_payload, request_endpoint))
 end
 
 return Http

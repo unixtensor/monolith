@@ -1,18 +1,12 @@
 --!strict
 
-local HttpService = game:GetService("HttpService")
-
 type QueryBody = {
 	ClassName: string;
 	Name: string;
 	Children: QueryBody?;
 }
-type QueryHeader = {
-	Game: string;
-	Owner: number;
-}
-type Payload = {
-	[number]: QueryHeader | QueryBody
+export type Payload = {
+	[string]: QueryBody
 }
 
 local Data = {} :: Constructor
@@ -22,7 +16,7 @@ type Constructor = {
 	__index: Constructor;
 	monitor: {Instance};
 	new: () -> Data;
-	collect: (self: Data) -> string;
+	collect: (self: Data) -> Payload;
 }
 export type Data = setmetatable<{ payload: Payload }, typeof(Data)>
 
@@ -42,14 +36,6 @@ Data.monitor = {
 	game:GetService("SoundService");
 	game:GetService("TextChatService");
 }
-
-local function json_payload(self: Data): string
-	self.payload[1] = {
-		Game = game.Name,
-		Owner = game.CreatorId
-	}
-	return HttpService:JSONEncode(self.payload)
-end
 
 local function body(instance: Instance, children: QueryBody?): QueryBody
 	local skeleton: QueryBody = {
@@ -79,14 +65,11 @@ function Data.new()
 end
 
 function Data:collect()
-	self.payload = {
-		[1] = {} :: QueryHeader; --header
-		[2] = {} :: QueryBody; --body
-	}
+	self.payload = {}
 	for _, service in Data.monitor do
-		self.payload[2][service.Name] = query(service)
+		self.payload[service.Name] = query(service)
 	end
-	return json_payload(self)
+	return self.payload
 end
 
 return Data

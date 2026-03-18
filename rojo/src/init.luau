@@ -43,12 +43,15 @@ function Monolith.new(address, compression)
 end
 
 function Monolith:ConnectAsync()
-
+	self.http:PostAsync({
+		Id = game.PlaceId,
+		Name = game.Name,
+		CreatorId = game.CreatorId,
+	}, Http.ApiEndpoint.CONNECT)
 end
 
 function Monolith:UploadAsync()
-	local json_payload = self.data:collect()
-	self.http:PostAsync(json_payload, Http.ApiEndpoint.UPLOAD)
+	self.http:UploadAsync(self.data:collect())
 end
 
 function Monolith:ListenAsync()
