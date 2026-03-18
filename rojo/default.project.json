@@ -1,0 +1,16 @@
+{
+	"name": "monolith-dev",
+	"tree": {
+		"$className": "DataModel",
+
+		"ServerScriptService": {
+			"monolith": {
+				"$className": "Folder",
+
+				"main": {
+					"$path": "src"
+				}
+			}
+		}
+	}
+}
