@@ -14,16 +14,17 @@ type QueryHeader = {
 type Payload = {
 	[number]: QueryHeader | QueryBody
 }
+
+local Data = {} :: Constructor
+Data.__index = Data
+
 type Constructor = {
 	__index: Constructor;
 	monitor: {Instance};
 	new: () -> Data;
 	collect: (self: Data) -> string;
 }
-export type Data = typeof(setmetatable({} :: { payload: Payload }, {} :: Constructor))
-
-local Data = {} :: Constructor
-Data.__index = Data
+export type Data = setmetatable<{ payload: Payload }, typeof(Data)>
 
 --Services to monitor
 Data.monitor = {
