@@ -29,15 +29,11 @@ type Self = {
 }
 export type Http = setmetatable<Self, typeof(Http)>
 
-type PostRequest = {
-	[string]: string | Enum.HttpCompression | PostRequest
-}
-
 local function MakeApiRequest(address: string, request: string): string
 	return `{address}/api/v1/{request}`
 end
 
-local function PostBody(self: Http, json_payload: string, request: string): PostRequest
+local function PostBody(self: Http, game_data: boolean, json_payload: string, request: string): any
 	return {
 		Url = MakeApiRequest(self.address, request),
 		Method = "POST",
@@ -45,7 +41,7 @@ local function PostBody(self: Http, json_payload: string, request: string): Post
 			["Content-Type"] = "application/json",
 		},
 		Body = json_payload,
-		Compress = self.compression
+		Compress = game_data and self.compression or Enum.HttpCompression.None
 	}
 end
 
@@ -61,7 +57,8 @@ function Http.new(address, compression)
 end
 
 function Http:PostAsync(json_payload, request)
-	HttpService:RequestAsync(PostBody(self, json_payload, request))
+	local CreatePostBody = PostBody(self, false, json_payload, request)
+	HttpService:RequestAsync(CreatePostBody)
 end
 
 return Http
