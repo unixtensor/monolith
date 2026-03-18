@@ -1,15 +1,19 @@
 .PHONY: rojo
 
+#setup the entire project
 setup:
 	cd web && pnpm install
 	go mod download
+	$(MAKE) rojo
 
+#return the project to its base repo
 clean:
-	rm -rf ./web/dist
+	rm -r ./web/dist
 	rm ./monolith_server
+	rm ./sourcemap.json
 
 web:
-	rm -rf ./web/dist
+	rm -r ./web/dist
 	cd web && pnpm install
 	cd web && pnpm run build
 
