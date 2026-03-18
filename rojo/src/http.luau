@@ -11,7 +11,7 @@ type Constructor = {
 	Enabled: boolean;
 	new: (address: string, compression: Enum.HttpCompression) -> Http;
 	ValidAddress: (address: string) -> boolean;
-	PostRequest: (self: Http, json_payload: string) -> ();
+	PostAsync: (self: Http, json_payload: string) -> ();
 }
 type Self = {
 	address: string;
@@ -30,8 +30,8 @@ function Http.new(address, compression)
 	return setmetatable(self, Http)
 end
 
-function Http:PostRequest(json_payload)
-	local req = HttpService:RequestAsync({
+function Http:PostAsync(json_payload)
+	local post_req = HttpService:RequestAsync({
 		Url = self.address,
 		Method = "POST",
 		Headers = {

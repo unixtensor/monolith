@@ -16,7 +16,7 @@ type Constructor = {
 	DEV_MODE: boolean;
 	LISTEN_RATE: number;
 	new: (address: string, compression: Enum.HttpCompression?) -> Monolith;
-	Upload: (self: Monolith) -> ();
+	UploadAsync: (self: Monolith) -> ();
 	ListenAsync: (self: Monolith) -> ();
 }
 type Self = {
@@ -41,14 +41,14 @@ function Monolith.new(address, compression)
 	return setmetatable(self, Monolith)
 end
 
-function Monolith:Upload()
+function Monolith:UploadAsync()
 	local json_payload = self.data:collect()
-	self.http:PostRequest(json_payload)
+	self.http:PostAsync(json_payload)
 end
 
 function Monolith:ListenAsync()
 	while task.wait(Monolith.LISTEN_RATE) do
-		self:Upload()
+		self:UploadAsync()
 	end
 end
 
