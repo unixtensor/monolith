@@ -3,9 +3,9 @@
 	"tree": {
 		"$className": "DataModel",
 
-		"ServerScriptService": {
+		"ServerStorage": {
 			"monolith": {
-				"$path": "src"
+				"$path": "rojo/src"
 			}
 		}
 	}
