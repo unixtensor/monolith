@@ -8,14 +8,12 @@ Http.__index = Http
 Http.Enabled = HttpService.HttpEnabled
 Http.ApiEndpoint = {
 	CONNECT = "connect";
-	UPLOAD = "upload";
-	GAME_DATA = "game_data";
+	UPLOAD = "connected/upload";
 }
 
 type Api = {
 	["CONNECT"]: "connect";
-	["UPLOAD"]: "upload";
-	["GAME_DATA"]: "game_data";
+	["UPLOAD"]: "connected/upload";
 }
 
 type JsonPayload = {

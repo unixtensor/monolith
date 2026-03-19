@@ -19,7 +19,7 @@ func main() {
 	}
 	if !port_set {
 		port = "3000"
-		log.Println("Environment variable PORT is not set, DEFAULTING to 3000.")
+		log.Println("Environment variable PORT is not set, DEFAULTING to 3000." + PROMPT_PADDING)
 	}
 
 	api.Start(&api.Config{
