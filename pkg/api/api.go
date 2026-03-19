@@ -8,9 +8,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/unixtensor/monolith/pkg/game"
 )
-
-var game ConnectedGame
 
 type Config struct {
 	Port      string
@@ -18,30 +17,24 @@ type Config struct {
 	Debugging bool
 }
 
-type ConnectedGame struct {
-	CreatorId int    `json:"CreatorId"`
-	Id        int    `json:"Id"`
-	Name      string `json:"Name"`
-}
-
-func is_connected(ctx *gin.Context) {
-	if game.Id != 0 {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "No game linked"})
-		return
-	}
-	ctx.Next()
-}
-
 func connect(ctx *gin.Context) {
-	if game.Id != 0 {
+	if game.Connected() {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}
-	if err := ctx.ShouldBindJSON(&game); err != nil {
+	if err := ctx.ShouldBindJSON(&game.Game); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "Success"})
+}
+
+func is_connected(ctx *gin.Context) {
+	if !game.Connected() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "No game linked"})
+		return
+	}
+	ctx.Next()
 }
 
 func upload(ctx *gin.Context) {
@@ -57,24 +50,27 @@ func upload(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to read body"})
 		return
 	}
-
-	var payload map[string]any
-	if err := json.Unmarshal(bytes, &payload); err != nil {
+	if err := json.Unmarshal(bytes, &game.GameInstance); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
-
-	log.Println(payload)
 	ctx.JSON(http.StatusOK, gin.H{"Success": true})
+}
+
+func get_instance(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, &game.GameInstance)
 }
 
 func v1(api_root *gin.Engine) {
 	api_v1 := api_root.Group("/api/v1")
 	api_v1.POST("/connect", connect)
-
+	api_v1.GET("/connected", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, game.Connected())
+	})
 	connected_api := api_v1.Group("/connected")
 	connected_api.Use(is_connected)
 	connected_api.POST("/upload", upload)
+	connected_api.GET("/instance", get_instance)
 }
 
 func Start(cfg *Config) {
