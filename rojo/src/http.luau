@@ -69,7 +69,13 @@ end
 
 function Http:PostAsync(payload, request_endpoint)
 	local json_payload = HttpService:JSONEncode(payload)
-	HttpService:RequestAsync(PostBody(self, false, json_payload, request_endpoint))
+	local response = HttpService:RequestAsync(PostBody(self, false, json_payload, request_endpoint))
+
+	if response.Success then
+		print(response)
+		return
+	end
+	warn(`{payload} FOR /{request_endpoint} did not succeed!`)
 end
 
 return Http
