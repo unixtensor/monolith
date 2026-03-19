@@ -22,7 +22,7 @@ func connect(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}
-	if err := ctx.ShouldBindJSON(&game.Game); err != nil {
+	if err := ctx.ShouldBindJSON(&game.CurrentGame.Metadata); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -50,7 +50,7 @@ func upload(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to read body"})
 		return
 	}
-	if err := json.Unmarshal(bytes, &game.GameInstance); err != nil {
+	if err := json.Unmarshal(bytes, &game.CurrentGame.Metadata); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
@@ -58,7 +58,7 @@ func upload(ctx *gin.Context) {
 }
 
 func get_instance(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, &game.GameInstance)
+	ctx.JSON(http.StatusOK, &game.CurrentGame.Instance)
 }
 
 func v1(api_root *gin.Engine) {
