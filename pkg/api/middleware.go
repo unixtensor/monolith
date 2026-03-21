@@ -20,7 +20,7 @@ func VerifyToken(token *string) gin.HandlerFunc {
 
 func VerifyGameConnected() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		if !game.Connected() {
+		if !game.Current.Connected() {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "No game linked"})
 			return
 		}

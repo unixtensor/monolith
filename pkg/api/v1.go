@@ -16,7 +16,7 @@ type Config struct {
 }
 
 func connect(ctx *gin.Context) {
-	if game.Connected() {
+	if game.Current.Connected() {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}
@@ -56,7 +56,7 @@ func get_instance(ctx *gin.Context) {
 }
 
 func connected(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, game.Connected())
+	ctx.JSON(http.StatusOK, game.Current.Connected())
 }
 
 func disconnect(ctx *gin.Context) {

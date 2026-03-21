@@ -21,10 +21,10 @@ type GameMetadata struct {
 	Name      string `json:"Name"`
 }
 
-var Current Game
+var Current Game = Game{}
 
-func Connected() bool {
-	return Current.Metadata.Id != 0
+func (g *Game) Connected() bool {
+	return g.Metadata.Id != 0
 }
 
 func Disconnect() {
