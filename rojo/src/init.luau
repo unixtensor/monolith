@@ -15,7 +15,8 @@ type Constructor = {
 	__index: Constructor;
 	DEV_MODE: boolean;
 	LISTEN_RATE: number;
-	new: (address: string, enable_compression: boolean?) -> Monolith;
+	UseInsecure: () -> ();
+	new: (address: string, token: string, enable_compression: boolean?) -> Monolith;
 	ConnectAsync: (self: Monolith) -> ();
 	UploadAsync: (self: Monolith) -> ();
 	ListenAsync: (self: Monolith) -> ();
@@ -27,17 +28,17 @@ type Self = {
 }
 export type Monolith = setmetatable<Self, typeof(Monolith)>
 
-function Monolith.new(address, enable_compression)
-	if not Monolith.DEV_MODE and not Http.Enabled then
-		error("Cannot proceed! Monolith REQUIRES http requests to be enabled for this game. STOPPING", 0)
-	end
-	if not Http.ValidAddress(address) then
-		error(`"{address}" Is not a valid http/https address. STOPPING`, 0)
-	end
+function Monolith.UseInsecure()
+	Http.__bypassInsecure = true
+end
+
+function Monolith.new(address, token, enable_compression)
+	assert(Http.Enabled, "Cannot proceed! Monolith REQUIRES http requests to be enabled for this game. STOPPING")
+	assert(Http.ValidAddress(address), `"{address}" Is not a valid http/https address. STOPPING`)
 
 	local self = {}
 	self.data = Data.new()
-	self.http = Http.new(address, enable_compression)
+	self.http = Http.new(address, token, enable_compression)
 	self.address = address
 	return setmetatable(self, Monolith)
 end
@@ -47,7 +48,7 @@ function Monolith:ConnectAsync()
 		Id = game.PlaceId,
 		Name = game.Name,
 		CreatorId = game.CreatorId,
-	}, Http.ApiEndpoint.CONNECT)
+	}, "/connect")
 end
 
 function Monolith:UploadAsync()
