@@ -1,25 +1,7 @@
 --!strict
 
-type QueryBody = {
-	ClassName: string;
-	Name: string;
-	children: QueryBody?;
-}
-export type Payload = {
-	[string]: QueryBody
-}
-
 local Data = {} :: Constructor
 Data.__index = Data
-
-type Constructor = {
-	__index: Constructor;
-	monitor: {Instance};
-	new: () -> Data;
-	collect: (self: Data) -> Payload;
-}
-export type Data = setmetatable<{ payload: Payload }, typeof(Data)>
-
 --Services to monitor
 Data.monitor = {
 	game:GetService("Workspace");
@@ -36,6 +18,23 @@ Data.monitor = {
 	game:GetService("SoundService");
 	game:GetService("TextChatService");
 }
+
+type QueryBody = {
+	ClassName: string;
+	Name: string;
+	children: QueryBody?;
+}
+export type Payload = {
+	[string]: QueryBody
+}
+
+type Constructor = {
+	__index: Constructor;
+	monitor: {Instance};
+	new: () -> Data;
+	collect: (self: Data) -> Payload;
+}
+export type Data = setmetatable<{ payload: Payload }, typeof(Data)>
 
 local function body(instance: Instance, children: QueryBody?): QueryBody
 	local skeleton: QueryBody = {
