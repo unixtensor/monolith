@@ -31,7 +31,7 @@ export type GameInstancePayload = {
 type Constructor = {
 	__index: Constructor;
 	monitor: {Instance};
-	new: () -> Instance;
+	new: () -> GameInstance;
 	Collect: (self: GameInstance) -> GameInstancePayload;
 }
 export type GameInstance = setmetatable<{ payload: GameInstancePayload }, typeof(GameInstance)>
@@ -71,4 +71,4 @@ function GameInstance:Collect()
 	return self.payload
 end
 
-return Instance
+return GameInstance
