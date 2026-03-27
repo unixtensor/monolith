@@ -56,6 +56,7 @@ local function rest_builder(self: Http, rest: RestDetails): Json
 		Body = rest.body;
 	}
 	if self.compression then
+		payload.Headers["Content-Encoding"] = "gzip"
 		payload.Compress = Enum.HttpCompression.Gzip
 	end
 	return payload

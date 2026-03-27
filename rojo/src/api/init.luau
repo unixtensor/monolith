@@ -14,9 +14,9 @@ type Constructor = {
 }
 export type Api = setmetatable<{ http: Http.Http }, typeof(Api)>
 
-function Api.new(address, token)
+function Api.new(address, token, compression)
 	return setmetatable({
-		http = Http.new(address, token)
+		http = Http.new(address, token, compression)
 	}, Api)
 end
 

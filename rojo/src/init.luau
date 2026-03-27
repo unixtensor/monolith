@@ -42,7 +42,7 @@ function Monolith.new(address, token, enable_compression)
 
 	local self = {}
 	self.data = Data.new()
-	self.api = Api.new(address, token)
+	self.api = Api.new(address, token, enable_compression ~= nil and enable_compression or true)
 	self.address = address
 	return setmetatable(self, Monolith)
 end
