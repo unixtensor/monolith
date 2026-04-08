@@ -6,7 +6,7 @@ type Servers = map[JobId]Game
 
 type Game struct {
 	Name      string `json:"Name" binding:"required"`
-	CreatorId uint   `json:"CreatorId" binding:"required"`
+	CreatorId uint   `json:"CreatorId"`
 	Instance  *Instance
 }
 
