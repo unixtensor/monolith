@@ -21,9 +21,9 @@ func main() {
 	}
 
 	api_v1 := api.Config{
-		Port:      port,
-		Token:     token,
-		Debugging: debug_set,
+		Port:  port,
+		Token: token,
+		Debug: debug_set,
 	}
 	api_v1.Start()
 }
