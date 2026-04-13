@@ -25,7 +25,11 @@ export function useAuth() {
 	return useContext(Context);
 }
 
-export default function Auth({ children }: { children: React.ReactNode }) {
+export default function AuthProvider({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	const { data, isLoading, error } = useQuery({
 		queryKey: ["auth"],
 		queryFn: () =>

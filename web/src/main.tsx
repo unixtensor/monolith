@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { Toaster } from "sonner";
 import App from "./App.tsx";
-import Auth from "./app/auth/init.tsx";
+import AuthProvider from "./app/auth/init.tsx";
 import "./index.css";
 
 const queryClient = new QueryClient();
@@ -13,11 +13,11 @@ createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<Auth>
-				<BrowserRouter>
+				<AuthProvider>
 					<App />
 					<Toaster />
 				</BrowserRouter>
 			</Auth>
-		</QueryClientProvider>
+				</AuthProvider>
 	</StrictMode>,
 );
