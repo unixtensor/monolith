@@ -7,6 +7,7 @@ import axios from "axios";
 import { LoaderCircle } from "lucide-react";
 import { useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { LoggedIn, NeedLogin, useAuth } from "../auth/init";
 import { useTitle } from "../hooks/useTitle";
 
@@ -35,6 +36,7 @@ function SubmitToken() {
 			queryClient
 				.refetchQueries({ queryKey: ["auth"] })
 				.catch(() => location.reload());
+			toast.success("Login successful");
 		} else if (NeedLogin(r.status)) {
 			setLoginData({ FailedReason: "Incorrect token", Failed: true });
 		} else {
