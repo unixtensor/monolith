@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { CircleX, LoaderPinwheel } from "lucide-react";
 import { Outlet } from "react-router";
-import useAuth from "./context/auth/context";
+import useAuth from "./auth/context";
 import { useTitle } from "./hooks/useTitle";
 import Login from "./login/init";
 

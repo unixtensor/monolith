@@ -7,7 +7,8 @@ import axios from "axios";
 import { LoaderCircle } from "lucide-react";
 import { useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
-import useAuth from "../context/auth/context";
+import useAuth from "../auth/context";
+import { logged_in, need_login } from "../auth/utils";
 import { useTitle } from "../hooks/useTitle";
 
 interface loginData {
@@ -30,12 +31,12 @@ function SubmitToken() {
 			JSON.stringify(input.current?.value),
 			{ validateStatus: () => true },
 		);
-		if (r.status === 200) {
+		if (logged_in(r.status)) {
 			navigate("/dashboard", { replace: true });
 			queryClient
 				.refetchQueries({ queryKey: ["auth"] })
 				.catch(() => location.reload());
-		} else if (r.status === 401) {
+		} else if (need_login(r.status)) {
 			setLoginData({ FailedReason: "Incorrect token", Failed: true });
 		} else {
 			setLoginData({

@@ -1,18 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Context } from "./context";
+import { logged_in, need_login } from "./utils";
 
 export interface AuthContext {
 	guest?: boolean;
 	isLoading: boolean;
 	error: Error | null;
-}
-
-function logged_in(s: number): boolean {
-	return s === 200;
-}
-function need_login(s: number): boolean {
-	return s === 401;
 }
 
 export default function Auth({ children }: { children: React.ReactNode }) {
