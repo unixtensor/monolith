@@ -1,15 +1,16 @@
-import { Route, Routes } from "react-router";
-import Dashboard from "./app/dashboard/init";
+import { Navigate, Route, Routes } from "react-router";
 import Auth from "./app/init";
 import Login from "./app/login/init";
+import Servers from "./app/servers/init";
 
 function App() {
 	return (
 		<Routes>
 			<Route path="/login" element={<Login />} />
 			<Route element={<Auth />}>
-				<Route path="*" element={<Dashboard />} />
-				<Route path="/dashboard" index element={<Dashboard />} />
+				<Route path="*" element={<Navigate to="/servers" replace />} />
+				<Route path="/servers" index element={<Servers />} />
+				{/*<Route path="/graph" element={<Dashboard />} />*/}
 				<Route path="/:placeId/:jobId" />
 			</Route>
 		</Routes>
