@@ -11,11 +11,9 @@ export interface AuthContext {
 export function LoggedIn(s: number): boolean {
 	return s === 200;
 }
-
 export function NeedLogin(s: number): boolean {
 	return s === 401;
 }
-
 export const Context = createContext<AuthContext>({
 	isLoading: true,
 	error: null,
