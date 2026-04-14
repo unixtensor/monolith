@@ -35,7 +35,7 @@ export default function Sidebar() {
 	return (
 		<ShadSidebar className="border-none">
 			<SidebarHeader>
-				<h1>Monolith</h1>
+				<h1 className="text-center">Monolith</h1>
 			</SidebarHeader>
 			<SidebarContent>
 				<ButtonsGroup />
