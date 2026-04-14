@@ -4,20 +4,23 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { Toaster } from "sonner";
 import App from "./App.tsx";
-import Auth from "./app/context/auth/init.tsx";
+import AuthProvider from "./app/auth/init.tsx";
+import { ThemeProvider } from "./components/theme-provider.tsx";
 import "./index.css";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<Auth>
-				<BrowserRouter>
-					<App />
-					<Toaster />
-				</BrowserRouter>
-			</Auth>
-		</QueryClientProvider>
+		<ThemeProvider defaultTheme="dark" storageKey="monolith-ui-theme">
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<BrowserRouter>
+						<App />
+						<Toaster />
+					</BrowserRouter>
+				</AuthProvider>
+			</QueryClientProvider>
+		</ThemeProvider>
 	</StrictMode>,
 );

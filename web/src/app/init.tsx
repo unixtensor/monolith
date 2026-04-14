@@ -1,14 +1,14 @@
 import { Card } from "@/components/ui/card";
 import { CircleX, LoaderPinwheel } from "lucide-react";
 import { Outlet } from "react-router";
-import useAuth from "./context/auth/context";
+import { useAuth } from "./auth/init";
 import { useTitle } from "./hooks/useTitle";
 import Login from "./login/init";
 
 function Loading() {
 	return (
 		<main className="flex justify-center items-center h-screen">
-			<LoaderPinwheel className="animate-spin-pulse text-[#b3b3b3] w-10 h-10" />
+			<LoaderPinwheel className="animate-spin-pulse w-10 h-10" />
 		</main>
 	);
 }
@@ -18,7 +18,7 @@ function ServerError({ children }: { children: string }) {
 
 	return (
 		<main className="w-screen h-screen flex justify-center items-center">
-			<Card className="flex flex-col content-center items-center p-8 gap-5 bg-[#260909]">
+			<Card className="flex flex-col content-center items-center p-8 gap-5 border border-destructive">
 				<CircleX className="w-7 h-7" />
 				<p>{children}</p>
 			</Card>
@@ -29,7 +29,6 @@ function ServerError({ children }: { children: string }) {
 export default function Auth() {
 	const auth = useAuth();
 
-	if (!auth) return <></>;
 	if (auth.isLoading) return <Loading />;
 	if (auth.error) return <ServerError>{auth.error.message}</ServerError>;
 	if (auth.guest) return <Login />;

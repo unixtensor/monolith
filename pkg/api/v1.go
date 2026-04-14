@@ -17,6 +17,7 @@ func (c *Config) v1(api_root *gin.Engine) {
 	api_v1 := api_root.Group("/api/v1")
 	{
 		api_v1.POST("/", func(ctx *gin.Context) { v1.Login(ctx, c.Token) })
+		api_v1.POST("/logout", v1.Logout)
 		api_v1.Use(VerifyToken(c.Token))
 		api_v1.GET("/", func(ctx *gin.Context) { ctx.Status(http.StatusOK) })
 		api_v1.GET("/games-servers", v1.Servers)
