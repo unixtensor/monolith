@@ -10,7 +10,8 @@ function App() {
 			<Route element={<Auth />}>
 				<Route path="*" element={<Navigate to="/servers" replace />} />
 				<Route path="/servers" index element={<Servers />} />
-				{/*<Route path="/graph" element={<Dashboard />} />*/}
+				{/*<Route path="/graph" element={<Servers />} />*/}
+				<Route path="/:placeId/" />
 				<Route path="/:placeId/:jobId" />
 			</Route>
 		</Routes>
