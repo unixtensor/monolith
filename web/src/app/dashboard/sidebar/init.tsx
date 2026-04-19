@@ -25,23 +25,20 @@ import {
 	ServerIcon,
 } from "lucide-react";
 import { Link } from "react-router";
-import { useServers } from "../games";
+import { useGames } from "../games";
 import Logout from "./logout";
 
 function Games() {
-	const servers = useServers();
+	const games = useGames();
 
 	return (
 		<SidebarMenuItem>
-			<Link to="/servers">
-				<CollapsibleTrigger
-					asChild
-					disabled={servers.data.length === 0}
-				>
+			<Link to="/games">
+				<CollapsibleTrigger asChild disabled={games.data.length === 0}>
 					<SidebarMenuButton>
 						<ServerIcon />
 						<span>Games</span>
-						{servers.isLoading && (
+						{games.isLoading && (
 							<LoaderCircleIcon className="animate-spin" />
 						)}
 						<ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -51,10 +48,10 @@ function Games() {
 			<CollapsibleContent>
 				<SidebarMenuSub>
 					<SidebarMenuSubItem>
-						{servers.data.map((server) => (
-							<SidebarMenuSubButton asChild key={server.PlaceId}>
-								<Link to={`/${server.PlaceId}`}>
-									<span>{server.Name}</span>
+						{games.data.map((game) => (
+							<SidebarMenuSubButton asChild key={game.PlaceId}>
+								<Link to={`/${game.PlaceId}`}>
+									<span>{game.Name}</span>
 								</Link>
 							</SidebarMenuSubButton>
 						))}
