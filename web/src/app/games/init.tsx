@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
-import { useServers } from "../dashboard/games";
+import { useGames } from "../dashboard/games";
 
 function NoGamesRunning() {
 	return (
@@ -32,19 +32,19 @@ function Loading() {
 	);
 }
 
-function DisplayServers() {
-	const servers = useServers();
+function DisplayGames() {
+	const games = useGames();
 
-	if (servers.isLoading) return <Loading />;
-	if (servers.data.length === 0) return <NoGamesRunning />;
+	if (games.isLoading) return <Loading />;
+	if (games.data.length === 0) return <NoGamesRunning />;
 
-	return servers.data.map((server) => (
-		<Link to={`/${server.PlaceId}`} key={server.JobId}>
+	return games.data.map((game) => (
+		<Link to={`/${game.PlaceId}`} key={game.JobId}>
 			<Button className="w-full bg-secondary hover:bg-primary flex justify-between gap-5 min-h-22 p-5">
 				<div className="flex items-center gap-5">
 					<img
 						src={
-							server.JobId !== "studio"
+							game.JobId !== "studio"
 								? "https://upload.wikimedia.org/wikipedia/commons/2/29/Roblox_Icon_Transparent.png"
 								: "https://upload.wikimedia.org/wikipedia/commons/e/ee/Roblox_Studio_icon_2025.svg"
 						}
@@ -52,17 +52,17 @@ function DisplayServers() {
 					/>
 					<div className="flex flex-col gap-2 text-left">
 						<div className="flex items-center gap-3">
-							<h1 className="font-bold text-lg">{server.Name}</h1>
+							<h1 className="font-bold text-lg">{game.Name}</h1>
 							<div className="bg-green-500 w-3 h-3 rounded-full"></div>
 						</div>
 						<div className="flex gap-3 opacity-60 [&>div]:flex [&>div]:items-center [&>div]:gap-1">
 							<div>
 								<TagIcon />
-								<h2>{server.PlaceId}</h2>
+								<h2>{game.PlaceId}</h2>
 							</div>
 							<div>
 								<UsersIcon />
-								<h2>{server.MaxPlayers}</h2>
+								<h2>{game.MaxPlayers}</h2>
 							</div>
 						</div>
 					</div>
@@ -111,7 +111,7 @@ export default function Servers() {
 			</header>
 			<div className="flex flex-col gap-5 mt-3">
 				<Search />
-				<DisplayServers />
+				<DisplayGames />
 			</div>
 		</>
 	);

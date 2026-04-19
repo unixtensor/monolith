@@ -29,7 +29,7 @@ const GamesContext = createContext<GamesContext>({
 	error: null,
 });
 
-export const useServers = () => {
+export const useGames = () => {
 	const context = useContext(GamesContext);
 	if (context === undefined)
 		throw new Error("useAuth must be used within a GamesProvider");
