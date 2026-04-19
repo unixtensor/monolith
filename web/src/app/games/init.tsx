@@ -102,7 +102,7 @@ function Search() {
 	);
 }
 
-export default function Servers() {
+export default function Games() {
 	return (
 		<>
 			<header className="flex gap-3 mt-3 mb-5">
