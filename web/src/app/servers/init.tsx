@@ -13,8 +13,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
-import Dashboard from "../dashboard/init";
-import ServersProvider, { useServers } from "../dashboard/servers";
+import { useServers } from "../dashboard/servers";
 
 function NoGamesRunning() {
 	return (
@@ -94,7 +93,7 @@ function Search() {
 				<Button onClick={handleRefresh} disabled={refreshing}>
 					<RefreshCwIcon
 						className={refreshing ? "animate-spin" : ""}
-					/>{" "}
+					/>
 					Refresh
 				</Button>
 				<Input placeholder="Search by name, players, id..." />
@@ -105,17 +104,15 @@ function Search() {
 
 export default function Servers() {
 	return (
-		<ServersProvider>
-			<Dashboard title="Servers">
-				<header className="flex gap-3 mt-3 mb-5">
-					<HardDriveIcon />
-					<div>Active Games</div>
-				</header>
-				<div className="flex flex-col gap-5 mt-3">
-					<Search />
-					<DisplayServers />
-				</div>
-			</Dashboard>
-		</ServersProvider>
+		<>
+			<header className="flex gap-3 mt-3 mb-5">
+				<HardDriveIcon />
+				<div>Active Games</div>
+			</header>
+			<div className="flex flex-col gap-5 mt-3">
+				<Search />
+				<DisplayServers />
+			</div>
+		</>
 	);
 }

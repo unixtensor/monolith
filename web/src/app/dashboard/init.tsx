@@ -1,39 +1,36 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useTitle } from "../hooks/useTitle";
+import { Outlet } from "react-router";
+import ServersProvider from "./servers";
 import Sidebar from "./sidebar/init";
 
-function Header({ children }: { children: string }) {
+function Header() {
 	return (
 		<header className="flex flex-col justify-center mt-2 mb-2">
 			<div className="flex gap-3 items-center ml-3">
 				<SidebarTrigger />
 				<Separator orientation="vertical" className="h-4 my-auto" />
-				<h1>{children}</h1>
+				<h1>Dashboard</h1>
 			</div>
 			<Separator className="mt-2 mb-2" />
 		</header>
 	);
 }
 
-export default function Dashboard({
-	title,
-	children,
-}: {
-	title: string;
-	children: React.ReactNode;
-}) {
-	useTitle(title);
-
+export default function Dashboard() {
 	return (
 		<main className="bg-sidebar">
-			<SidebarProvider>
-				<Sidebar />
-				<main className="bg-background w-full overflow-y-auto overflow-x-hidden">
-					<Header>{title}</Header>
-					<main className="mx-4">{children}</main>
-				</main>
-			</SidebarProvider>
+			<ServersProvider>
+				<SidebarProvider>
+					<Sidebar />
+					<main className="bg-background w-full overflow-y-auto overflow-x-hidden">
+						<Header />
+						<main className="mx-4">
+							<Outlet />
+						</main>
+					</main>
+				</SidebarProvider>
+			</ServersProvider>
 		</main>
 	);
 }
