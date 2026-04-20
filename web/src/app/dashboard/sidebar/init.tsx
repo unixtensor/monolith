@@ -18,6 +18,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
 	ChevronRight,
 	GitForkIcon,
@@ -87,9 +88,26 @@ function SettingsGroup() {
 	);
 }
 
+export function SidebarSkeleton() {
+	return (
+		<ShadSidebar>
+			<SidebarHeader>
+				<Skeleton className="h-5 w-40 mx-auto" />
+			</SidebarHeader>
+			<SidebarContent>
+				<Skeleton className="h-5 w-55 ml-2 mt-5" />
+				<Skeleton className="h-5 w-55 ml-2 mt-3" />
+			</SidebarContent>
+			<SidebarFooter>
+				<Skeleton className="h-7 w-60" />
+			</SidebarFooter>
+		</ShadSidebar>
+	);
+}
+
 export default function Sidebar() {
 	return (
-		<ShadSidebar className="border-none">
+		<ShadSidebar>
 			<SidebarHeader>
 				<h1 className="text-center">Monolith</h1>
 			</SidebarHeader>

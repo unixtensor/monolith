@@ -185,14 +185,6 @@ button:not(:disabled),
 	--shadow-2xl: var(--shadow-2xl);
 }
 
-@layer utilities {
-	.animate-spin-pulse {
-		animation:
-			spin 1s linear infinite,
-			pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-	}
-}
-
 @layer base {
 	* {
 		@apply border-border outline-ring/50;

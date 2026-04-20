@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { CircleX, LoaderPinwheel } from "lucide-react";
+import { CircleX, LoaderCircleIcon } from "lucide-react";
 import { Suspense } from "react";
 import { Outlet } from "react-router";
 import { useAuth } from "./auth/init";
@@ -9,7 +9,7 @@ import Login from "./login/init";
 function Loading() {
 	return (
 		<main className="flex justify-center items-center h-screen">
-			<LoaderPinwheel className="animate-spin-pulse w-10 h-10" />
+			<LoaderCircleIcon className="animate-spin w-10" />
 		</main>
 	);
 }

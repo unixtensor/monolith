@@ -5,6 +5,7 @@ import Login from "./app/login/init";
 
 const Dashboard = lazy(() => import("./app/dashboard/init"));
 const Games = lazy(() => import("./app/games/init"));
+const Servers = lazy(() => import("./app/games/servers"));
 
 function App() {
 	return (
@@ -14,7 +15,7 @@ function App() {
 			<Route element={<Auth />}>
 				<Route element={<Dashboard />}>
 					<Route path="/games" index element={<Games />} />
-					<Route path="/:placeId/" />
+					<Route path="/:placeId/" element={<Servers />} />
 					<Route path="/:placeId/:jobId" />
 				</Route>
 			</Route>
