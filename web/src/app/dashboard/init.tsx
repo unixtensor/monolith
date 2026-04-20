@@ -19,28 +19,22 @@ function Header() {
 	);
 }
 
-function Body({ children }: { children: React.ReactNode }) {
-	return (
-		<main className="bg-sidebar">
-			<ServersProvider>
-				<SidebarProvider>
-					<Sidebar />
-					<main className="bg-background w-full overflow-x-hidden">
-						<Header />
-						<main className="mx-4">{children}</main>
-					</main>
-				</SidebarProvider>
-			</ServersProvider>
-		</main>
-	);
-}
-
 export default function Dashboard() {
 	return (
 		<Suspense fallback={<Skeleton />}>
-			<Body>
-				<Outlet />
-			</Body>
+			<main className="bg-sidebar">
+				<ServersProvider>
+					<SidebarProvider>
+						<Sidebar />
+						<main className="bg-background w-full overflow-x-hidden">
+							<Header />
+							<main className="mx-4">
+								<Outlet />
+							</main>
+						</main>
+					</SidebarProvider>
+				</ServersProvider>
+			</main>
 		</Suspense>
 	);
 }
