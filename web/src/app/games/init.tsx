@@ -1,25 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useQueryClient } from "@tanstack/react-query";
 import {
 	CircleXIcon,
 	ExternalLinkIcon,
 	HardDriveIcon,
 	LoaderCircleIcon,
-	RefreshCwIcon,
 	TagIcon,
 	UsersIcon,
 } from "lucide-react";
-import { useState } from "react";
 import { Link } from "react-router";
-import { toast } from "sonner";
 import { useGames } from "../dashboard/games-servers";
+import SearchProvider, { useSearch } from "./search";
 
-function NoGamesRunning() {
+function NoResult({ children }: { children: string }) {
 	return (
 		<div className="flex flex-col gap-5 justify-center items-center h-100">
 			<CircleXIcon className="h-10 w-10" />
-			<h1>No games are running</h1>
+			<h1>{children}</h1>
 		</div>
 	);
 }
@@ -34,11 +30,23 @@ function Loading() {
 
 function DisplayGames() {
 	const games = useGames();
+	const search = useSearch();
 
 	if (games.isLoading) return <Loading />;
-	if (games.data.length === 0) return <NoGamesRunning />;
+	if (games.data.length === 0)
+		return <NoResult>No games are running</NoResult>;
 
-	return games.data.map((game) => (
+	const filtered = games.data.filter(
+		(game) =>
+			game.Name.toLowerCase().includes(search.searchTerm.toLowerCase()) ||
+			String(game.PlaceId).includes(search.searchTerm),
+	);
+	if (filtered.length === 0)
+		return (
+			<NoResult>{`No game with name nor id "${search.searchTerm}" found`}</NoResult>
+		);
+
+	return filtered.map((game) => (
 		<Link to={`/${game.PlaceId}`} key={game.JobId}>
 			<Button className="w-full bg-secondary hover:bg-primary flex justify-between gap-5 min-h-22 p-5">
 				<div className="flex items-center gap-5">
@@ -73,35 +81,6 @@ function DisplayGames() {
 	));
 }
 
-function Search() {
-	const [refreshing, setRefreshing] = useState<boolean>(false);
-	const queryClient = useQueryClient();
-
-	const handleRefresh = () => {
-		setRefreshing(true);
-		queryClient
-			.refetchQueries({ queryKey: ["games-servers"] })
-			.then(() => {
-				setRefreshing(false);
-				toast.success("Games refreshed");
-			})
-			.catch(() => location.reload());
-	};
-	return (
-		<div>
-			<div className="flex gap-2">
-				<Button onClick={handleRefresh} disabled={refreshing}>
-					<RefreshCwIcon
-						className={refreshing ? "animate-spin" : ""}
-					/>
-					Refresh
-				</Button>
-				<Input placeholder="Search by name, players, id..." />
-			</div>
-		</div>
-	);
-}
-
 export default function Games() {
 	return (
 		<>
@@ -110,8 +89,9 @@ export default function Games() {
 				<div>Active Games</div>
 			</header>
 			<div className="flex flex-col gap-5 mt-3">
-				<Search />
-				<DisplayGames />
+				<SearchProvider queryKey={["games-servers"]}>
+					<DisplayGames />
+				</SearchProvider>
 			</div>
 		</>
 	);
