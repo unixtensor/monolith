@@ -161,16 +161,16 @@ export function ServerButton({ to, game }: { to: To; game: Game }) {
 			metadata={
 				<>
 					<div>
+						<HouseIcon />
+						<h2>{game.Name}</h2>
+					</div>
+					<div>
 						<TagIcon />
 						<h2>{game.PlaceId}</h2>
 					</div>
 					<div>
 						<UsersIcon />
 						<h2>{game.MaxPlayers}</h2>
-					</div>
-					<div>
-						<HouseIcon />
-						<h2>{game.Name}</h2>
 					</div>
 					<div>
 						<ClockIcon />
