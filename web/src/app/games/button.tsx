@@ -100,8 +100,8 @@ function MainButton({
 						) : (
 							<div className="bg-green-500 size-3 rounded-full"></div>
 						)}
-						<div className="flex flex-col gap-2 text-left">
-							<div className="flex items-center gap-3">
+						<div className="flex flex-col gap-2">
+							<div className="flex items-center gap-3 ml-0.5">
 								{image && (
 									<div className="bg-green-500 size-3 rounded-full"></div>
 								)}
