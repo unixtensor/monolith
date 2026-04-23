@@ -41,6 +41,7 @@ function DisplayGames() {
 		<GameButton
 			to={`/${g.PlaceId}`}
 			game={g}
+			games={games.data}
 			key={g.JobId}
 			image={
 				g.JobId !== "studio"

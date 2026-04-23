@@ -14,6 +14,7 @@ import {
 	EllipsisIcon,
 	ExternalLinkIcon,
 	HouseIcon,
+	PowerIcon,
 	TagIcon,
 	UsersIcon,
 } from "lucide-react";
@@ -125,10 +126,12 @@ export function GameButton({
 	to,
 	image,
 	game,
+	games,
 }: {
 	to: To;
 	image: string;
 	game: Game;
+	games: Game[];
 }) {
 	return (
 		<MainButton
@@ -138,6 +141,10 @@ export function GameButton({
 			dropdown={<GameButtonDropdown game={game} />}
 			metadata={
 				<>
+					<div>
+						<PowerIcon className="text-green-500" />
+						<h2>{games.length}</h2>
+					</div>
 					<div>
 						<TagIcon />
 						<h2>{game.PlaceId}</h2>
@@ -165,12 +172,10 @@ export function ServerButton({ to, game }: { to: To; game: Game }) {
 						<h2>{game.Name}</h2>
 					</div>
 					<div>
-						<TagIcon />
-						<h2>{game.PlaceId}</h2>
-					</div>
-					<div>
 						<UsersIcon />
-						<h2>{game.MaxPlayers}</h2>
+						<h2>
+							{game.Players}/{game.MaxPlayers}
+						</h2>
 					</div>
 					<div>
 						<ClockIcon />
