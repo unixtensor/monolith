@@ -1,18 +1,19 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"regexp"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/unixtensor/monolith/pkg/api"
 )
 
 func main() {
+	token, token_set := os.LookupEnv("TOKEN")
 	port, port_set := os.LookupEnv("PORT")
 	_, debug_set := os.LookupEnv("DEBUG")
-	token, token_set := os.LookupEnv("TOKEN")
-
 	if !token_set {
 		log.Fatal("Environment variable: TOKEN is not set, STOPPING.")
 	}
@@ -21,13 +22,16 @@ func main() {
 	}
 	if !port_set {
 		port = "3000"
-		log.Println("Environment variable PORT is not set, DEFAULTING to 3000.")
 	}
 
-	api_v1 := api.Config{
+	bg_ctx := context.Background()
+	Redis := redis.NewClient(&redis.Options{Addr: "localhost:6379"})
+	defer Redis.Close()
+
+	api.V1(bg_ctx, api.Config{
 		Port:  port,
 		Token: token,
 		Debug: debug_set,
-	}
-	api_v1.Start()
+		Redis: Redis,
+	})
 }
